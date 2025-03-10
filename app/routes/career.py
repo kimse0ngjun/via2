@@ -1,5 +1,5 @@
 # 진로 추천 API
-from fastapi import APIRouter, HTTpException
+from fastapi import APIRouter, HTTPException
 from app.services.chatgpt_service import get_career_recommendation
 from app.models.schemas import CareerRequest, CareerResponse
 
@@ -11,5 +11,5 @@ async def career_recommendation(request: CareerRequest):
         response = await get_career_recommendation(request.user_input)
         return {"recommendation": response}
     except Exception as e:
-        raise HTTpException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
     

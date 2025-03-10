@@ -12,4 +12,3 @@ class InterviewRequest(BaseModel):
 
 class InterviewResponse(BaseModel):
     questions: List[str]
-    
