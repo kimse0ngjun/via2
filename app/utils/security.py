@@ -1,8 +1,9 @@
+# utils/security.py
 import bcrypt
-import jwt
+from jose import jwt 
 import os
 from dotenv import load_dotenv
-# utils/security.py
+
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")  # JWT 암호화 키
 ALGORITHM = "HS256"

@@ -1,16 +1,14 @@
-# user.py
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, Field
+from typing import Optional
 
-# 회원가입 요청 모델
-class UserCreate(BaseModel):
-    username: str
-    userid: str
-    password: str
-    repassword: str
+# 사용자 모델
+class User(BaseModel):
+    id: Optional[str] = None 
+    name: str = Field(..., min_length=2, max_length=50) 
+    email: EmailStr 
+    hashed_password: str 
+    provider: str = "local"  
+    social_id: Optional[str] = None  
 
-class UserLogin(BaseModel):
-    userid: str
-    password: str
-
-class UserResponse(BaseModel):
-    username: str
+    class Config:
+        orm_mode = True 

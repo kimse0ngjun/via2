@@ -1,10 +1,12 @@
-from pydantic import BaseSettings
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY")
+    OPENAI_API_KEY: str
+    MONGO_URI: str 
+    SECRET_KEY: str 
+
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
 
 settings = Settings()
