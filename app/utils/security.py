@@ -19,3 +19,14 @@ def verify_password(password: str, hashed_password: str) -> bool:
 # JWT 토큰 생성
 def create_jwt_token(data: dict) -> str:
     return jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
+
+# JWT 토큰 확인
+def verify_jwt_token(token: str):
+    try:
+        # JWT 디코딩
+        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        return payload
+    except jwt.ExpiredSignatureError:
+        return None
+    except jwt.InvaildTokenError:
+        return None
