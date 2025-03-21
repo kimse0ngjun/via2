@@ -37,6 +37,7 @@ async def register_user(data: RegisterRequest):
     hashed_password = hash_password(data.password)
     new_user = {
         "name": data.name,
+        "age": data.age,
         "email": data.email,
         "hashed_password": hashed_password,
         "provider": "local",
