@@ -5,6 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 from app.database import users_collection
+from app.models.auth import RegisterRequest, LoginRequest
 from app.utils.security import hash_password, verify_password, create_jwt_token, verify_jwt_token
 from bson import ObjectId
 
@@ -19,18 +20,7 @@ KAKAO_CLIENT_SECRET = os.getenv("KAKAO_CLIENT_SECRET")
 KAKAO_REDIRECT_URI = os.getenv("KAKAO_REDIRECT_URI")
 
 router = APIRouter()
-
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-class RegisterRequest(BaseModel):
-    name: str
-    email: EmailStr
-    password: str
-    password_confirm: str
-
-class LoginRequest(BaseModel):
-    email: EmailStr
-    password: str
 
 # 회원가입 API    
 @router.post("/register")
@@ -104,7 +94,6 @@ async def google_callback(code: str):
         "grant_type": "authorization_code"
     }
 
-    # 요청을 보내는 코드가 with 블록 안에 있도록 수정
     async with httpx.AsyncClient() as client:
         response = await client.post(token_url, data=payload)
 
@@ -113,10 +102,8 @@ async def google_callback(code: str):
     
     access_token = response.json().get("access_token")
 
-    # 구글 사용자 정보 가져오기
     user_info_url = "https://www.googleapis.com/oauth2/v2/userinfo"
     
-    # 다시 새로운 with 블록 안에서 요청을 보냄
     async with httpx.AsyncClient() as client:
         user_info_response = await client.get(user_info_url, headers={"Authorization": f"Bearer {access_token}"})
     
@@ -209,3 +196,4 @@ async def kakao_callback(code: str):
         "token_type": "bearer",
         "user": {"name": new_user["name"], "email": new_user["email"]}
     }
+

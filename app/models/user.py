@@ -11,4 +11,4 @@ class User(BaseModel):
     social_id: Optional[str] = None  
 
     class Config:
-        orm_mode = True 
+        orm_mode = True
