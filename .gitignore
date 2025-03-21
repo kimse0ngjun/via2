@@ -1,2 +1,3 @@
 # 환경 변수 파일 (보안 유지)
 .env
+node_modules
