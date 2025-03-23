@@ -22,18 +22,17 @@ KAKAO_REDIRECT_URI = os.getenv("KAKAO_REDIRECT_URI")
 router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-# 회원가입 API    
+# 회원가입 API
 @router.post("/register")
 async def register_user(data: RegisterRequest):
+    print("회원가입 요청 받음:", data)
     if data.password != data.password_confirm:
         raise HTTPException(status_code=400, detail="비밀번호가 일치하지 않습니다.")
 
-    # 이미 존재하는 이메일인지 확인
     existing_user = await users_collection.find_one({"email": data.email})
     if existing_user:
         raise HTTPException(status_code=400, detail="이미 가입된 이메일입니다.")
 
-    # 비밀번호 해싱 후 저장
     hashed_password = hash_password(data.password)
     new_user = {
         "name": data.name,
@@ -43,6 +42,7 @@ async def register_user(data: RegisterRequest):
         "provider": "local",
     }
     await users_collection.insert_one(new_user)
+    print("회원가입 성공:", new_user)
     return {"message": "회원가입이 완료되었습니다."}
 
 # 로그인 API
