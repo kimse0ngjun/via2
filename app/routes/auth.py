@@ -197,3 +197,7 @@ async def kakao_callback(code: str):
         "user": {"name": new_user["name"], "email": new_user["email"]}
     }
 
+# 네이버 로그인 요청
+
+
+# 네이버 콜백 처리
